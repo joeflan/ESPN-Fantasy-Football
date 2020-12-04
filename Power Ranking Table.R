@@ -42,7 +42,7 @@ pw_table <- final_power_rankings %>%
     team = map(team, ~gt::html(as.character(.x)))
   ) %>%
   gt() %>% 
-  tab_header(title = md("**V3 Power Rankings - Week 11**")) %>% 
+  tab_header(title = md("**V3 Power Rankings - Week 12**")) %>% 
   gt_theme_espn() %>% 
   cols_align("left", columns = vars(team)) %>% 
   cols_align("center", columns = "Rank") %>% 
@@ -51,7 +51,7 @@ pw_table <- final_power_rankings %>%
 pw_table
   
 
-#gt::gtsave(pw_table, filename = "week11.png") # width = 740, height = 900, units = "px")
+gt::gtsave(pw_table, filename = "week12.png") # width = 740, height = 900, units = "px")
 
 
 

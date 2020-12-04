@@ -20,4 +20,4 @@ ggplot(df, aes(x = exp_wins, y = wins)) +
   scale_x_continuous(limits = c(0, n_weeks), breaks = 0:n_weeks) +
   scale_y_continuous(limits = c(0, n_weeks), breaks = 0:n_weeks) 
 
-ggsave('pythagorean_fantasy_football.png', height = 9/1.5, width = 16/1.5)  
+ggsave('pythagorean_fantasy_football_week12.png', height = 9/1.5, width = 16/1.5)  

@@ -127,15 +127,16 @@ median_wins <- week_ranks_with_median %>%
 # Create Power Rankings Table / Gather Data
 
 power_rankings <- median_wins %>% 
-  left_join(points_scored, by = 'team') %>% 
-  left_join(exp_standings, by = 'team') %>% 
-  left_join(teams, by = 'team') %>% 
-  left_join(median_wins, by = 'team') %>% 
+  #left_join(points_scored, by = 'team') %>% 
+  left_join(points_scored) %>%
+  left_join(exp_standings) %>% 
+  left_join(teams) %>% 
+  left_join(median_wins) %>% 
   select_all() %>% 
   mutate('winning percentage' = (wins / n_weeks),
-         'median win percentage' = (as.numeric(`beat the median.x`) / n_weeks)) %>% 
+         'median win percentage' = (as.numeric(`beat the median`) / n_weeks)) %>% 
   select(team_id, team, wins, losses, `total score`, exp_wins, pts_per_week,
-         `beat the median.x`, `winning percentage`, `median win percentage`)
+         `beat the median`, `winning percentage`, `median win percentage`)
 
 
 # Add Formula
