@@ -7,10 +7,9 @@ library(glue)
 
 # ESPN League Information
 
-# League must be "viewable to public" in league settings
+# League must be viewable to the public in league settings
 league_id <- 226171 ### Copy this from your league's url
 league_year <- 2020
-league_size <- 12
 
 # League URL
 league_url <- paste0("http://fantasy.espn.com/apis/v3/games/ffl/seasons/",league_year,"/segments/0/leagues/",league_id,"?view=mDraftDetail&view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mSettings&view=mTeam&view=modular&view=mNav")
@@ -31,8 +30,7 @@ teams <-
          'wins' = record.overall.wins,
          'losses' = record.overall.losses,
          'ties' = record.overall.ties) %>% 
-  mutate('team' = paste(location, nickname, sep = '\n')) %>% 
-  select(team_id, division_id, team, everything())
+  mutate('team' = paste(location, nickname, sep = '\n'))
 
 # Create Scores Data Frame
 
@@ -55,14 +53,14 @@ scores <-
            case_when(home_score > away_score ~ home_team,
                      away_score > home_score ~ away_team,
                      home_score == away_score ~ 'tie')) %>% 
-  filter(home_score > 0)
+  filter(home_score != 0)
   
-# Create Current Standings
+# Create Current Week Standings
 
+n_weeks <- (nrow(scores) * 2 / nrow(teams))
 wins <- 
   map_dbl(teams$team, ~{sum(scores$result == .x) + 
       0.5 * sum(scores$result == 'tie' & (scores$home_team == .x | scores$away_team == .x))})
-n_weeks <- (nrow(scores) * 2 / league_size)
 losses <-  n_weeks - wins
 standings <- tibble('team' = teams$team,
                     'wins' = wins,
@@ -81,7 +79,7 @@ week_ranks <-
 
 exp_standings <- 
   group_by(week_ranks, team) %>% 
-  summarise('exp_wins' = sum((league_size - rank)/(league_size - 1)),
+  summarise('exp_wins' = sum((nrow(teams) - rank)/(nrow(teams) - 1)),
             'pts_per_week' = mean(score)) %>% 
   ungroup()
 
@@ -93,7 +91,7 @@ exp_standings <-
 
 # Points Scored
 
-points_scored <- week_ranks %>% 
+points_summary <- week_ranks %>% 
   group_by(team) %>% 
   summarise('total score' = sum(score)) %>% 
   select(team, 'total score')

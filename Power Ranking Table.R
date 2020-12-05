@@ -31,7 +31,7 @@ gt_theme_espn <- function(data, ...){
 pw_table <- final_power_rankings %>% 
   mutate(Rank = rank(desc(raw_score))) %>% 
   select(Rank, team, wins, losses, `Win %` = `winning percentage`, `Total Score` = `total score`, `Expected Wins` = `exp_wins`,
-         `Points Per Week` = pts_per_week, `Median Wins` = `beat the median.x`,
+         `Points Per Week` = pts_per_week, `Median Wins` = `beat the median`,
          `Median Win %` = `median win percentage`, `Power Rank Score` = `raw_score`) %>% 
   mutate(team = paste0(
     "<span style='font-size:16px; color:royalblue;'>",
@@ -51,7 +51,7 @@ pw_table <- final_power_rankings %>%
 pw_table
   
 
-gt::gtsave(pw_table, filename = "week12.png") # width = 740, height = 900, units = "px")
+#gt::gtsave(pw_table, filename = "week12.png") # width = 740, height = 900, units = "px")
 
 
 
